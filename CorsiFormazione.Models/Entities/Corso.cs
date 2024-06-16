@@ -11,5 +11,7 @@ namespace CorsiFormazione.Models.Entities
         public string NomeCorso { get; set; }
         public int Docente { get; set; }
         public int NumeroOre { get; set; }
+
+        public ICollection<Lezione> Lezioni { get; set; }
     }
 }

@@ -14,5 +14,8 @@ namespace CorsiFormazione.Models.Entities
         public DateTime DataOraFine { get; set; }
         public string Luogo {  get; set; }
         public ModoErogazione Erogazione { get; set; }
+
+        public Corso CorsoAssociato { get; set; }
+        public ICollection<Presenza> Presenze { get; set; }
     }
 }

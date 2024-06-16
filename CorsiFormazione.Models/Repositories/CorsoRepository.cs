@@ -22,8 +22,27 @@ namespace CorsiFormazione.Models.Repositories
         public void AggiungiCorso(Corso corso, Docente docente)
         {
             docente.idDocente = _context.Docenti.Count()+1;
+            var docentiPresenti = _context.Docenti
+                .ToList();
+            foreach(var docenteSingolo in docentiPresenti)
+            {
+                if(docenteSingolo.NomeDocente == docente.NomeDocente &&
+                    docenteSingolo.CognomeDocente == docente.CognomeDocente)
+                {
+                    throw new Exception("Il docente è già assegnato ad un altro corso");
+                }
+            }
             _context.Docenti.Add(docente);
             this.Save();
+            var corsiPresenti = _context.Corsi
+                .ToList();
+            foreach(var corsoSingolo in corsiPresenti)
+            {
+                if(corsoSingolo.NomeCorso == corso.NomeCorso)
+                {
+                    throw new Exception("Il corso già esiste");
+                }
+            }
             corso.Docente = docente.idDocente;
             _context.Corsi.Add(corso);
         }
@@ -76,6 +95,17 @@ namespace CorsiFormazione.Models.Repositories
             var lezioniPresenti = _context.Lezioni
                 .Where(n => n.NomeCorso == corso.NomeCorso)
                 .ToList();
+            if(lezioniPresenti.Count == 0)
+            {
+                _context.Lezioni.Add(lezione);
+            }
+            foreach(var lezioneSingola in lezioniPresenti)
+            {
+                if(lezioneSingola.DataOraInizio.Date == lezione.DataOraInizio.Date)
+                {
+                    throw new Exception("Nel calendario è già presente una lezione per il giorno passato. Possibile inserire una sola lezione per giorno");
+                }
+            }
             double oreSegnate = 0;
             foreach(var lezioneSingola in lezioniPresenti)
             {

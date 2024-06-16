@@ -19,6 +19,9 @@ namespace CorsiFormazione.Models.Configurations
                 .HasColumnName("DataOraIngresso");
             builder.Property(p => p.Uscita)
                 .HasColumnName("DataOraUscita");
+            builder.HasOne(k => k.LezioneDiRiferimento)
+                .WithMany(k => k.Presenze)
+                .HasForeignKey(k => new {k.Corso, k.Ingrezzo });
         }
     }
 }

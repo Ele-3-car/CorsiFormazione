@@ -13,5 +13,7 @@ namespace CorsiFormazione.Models.Entities
         public DateTime Ingrezzo { get; set; }
         public DateTime Uscita { get; set; }
         public string Corso { get; set; }
+
+        public Lezione LezioneDiRiferimento { get; set; }
     }
 }

@@ -45,6 +45,18 @@ namespace CorsiFormazione.Models.Repositories
             {
                 throw new Exception("Non esistono lezioni per la data inserita");
             }
+
+            var nomeECognome = _context.Presenze
+                .Where(n => n.Corso == corso)
+                .Where(n => n.NomeAlunno == presenza.NomeAlunno)
+                .Where(n => n.CognomeAlunno == presenza.CognomeAlunno)
+                .FirstOrDefault();
+
+            if (nomeECognome != null)
+            {
+                throw new Exception($"La presenza per l'alunno {presenza.NomeAlunno} {presenza.CognomeAlunno} è già presente");
+            }
+
             if (presenza.Ingrezzo.TimeOfDay < calendario.DataOraInizio.TimeOfDay ||
                 presenza.Ingrezzo.TimeOfDay > calendario.DataOraFine.TimeOfDay)
             {
@@ -54,15 +66,6 @@ namespace CorsiFormazione.Models.Repositories
                 presenza.Uscita.TimeOfDay < calendario.DataOraInizio.TimeOfDay)
             {
                 throw new Exception($"Il corso termina alle {calendario.DataOraFine.TimeOfDay}");
-            }
-            if (_context.Presenze.Count() != 0)
-            {
-                bool presente = _context.Presenze
-                .ContainsAsync(presenza).Result;
-                if (presente)
-                {
-                    throw new Exception("La presenza è già stata registrata");
-                }
             }
         }
 

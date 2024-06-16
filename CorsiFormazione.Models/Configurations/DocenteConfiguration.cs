@@ -14,7 +14,7 @@ namespace CorsiFormazione.Models.Configurations
         public void Configure(EntityTypeBuilder<Docente> builder)
         {
             builder.ToTable("Docente");
-            builder.HasKey(k => new { k.NomeDocente, k.CognomeDocente });
+            builder.HasKey(k => k.idDocente);
         }
     }
 }
