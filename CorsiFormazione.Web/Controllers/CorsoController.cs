@@ -1,6 +1,7 @@
 ﻿using CorsiFormazione.Application.Abstractions.Services;
 using CorsiFormazione.Application.Factories;
 using CorsiFormazione.Application.Models.Requests;
+using CorsiFormazione.Application.Models.Responses;
 using CorsiFormazione.Application.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -24,11 +25,11 @@ namespace CorsiFormazione.Web.Controllers
         [Route("creaCorso")]
         public IActionResult CreaCorso(CreaCorsoRequest request)
         {
-            var corso = request.ToEntity();
+            var corso = request.ToEntityCorso();
             var docente = request.ToEntityDocente();
-            var calendario = request.ToEntityCalendario();
-            _corsoService.AggiungiCorso(corso, docente, calendario);
-            return Ok(ResponseFactory.WithSuccess(corso));
+            _corsoService.AggiungiCorso(corso, docente);
+            var response = new CreaCorsoResponse(corso);
+            return Ok(ResponseFactory.WithSuccess(response));
         }
 
         [HttpDelete]
@@ -36,16 +37,17 @@ namespace CorsiFormazione.Web.Controllers
         public IActionResult EliminaCorso(EliminaCorsoRequest request)
         {
             _corsoService.EliminaCorso(request.Nome);
-            return Ok(ResponseFactory.WithSuccess("Corso eliminato con successo"));
+            return Ok(ResponseFactory.WithSuccess("Corso, docente, calendario e presenze eliminati con successo"));
         }
 
-        /*
-        //Deve essere paginato
-        [HttpGet]
-        [Route("ricercaPresenzePerCorso")]
-        public IActionResult RicercaPresenze(RicercaPresenzeRequest request)
+
+        [HttpPost]
+        [Route("aggiungiLezione")]
+        public IActionResult AggiungiLezione(AggiungiLezioneRequest request)
         {
-            return Ok();
-        }*/
+            var lezione = request.ToEntity();
+            _corsoService.AggiungiLezione(lezione);
+            return Ok(ResponseFactory.WithSuccess("La lezione è stata aggiunta con successo"));
+        }
     }
 }

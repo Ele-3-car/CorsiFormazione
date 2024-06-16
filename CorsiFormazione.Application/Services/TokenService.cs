@@ -27,12 +27,7 @@ namespace CorsiFormazione.Application.Services
 
         public string CreateToken(CreateTokenRequest request)
         {
-            //verificare esattezza coppia email/password
-
-            //se email/password corrette, creare token con claims necessarie
-            //prendere i parametri dalla configurazione
-            //prendere le claims dal database
-            Utente utente = _utenteService.PrendiUtente(request.email);
+            Utente utente = _utenteService.PrendiUtente(request.email, request.password);
             List<Claim> claims = new List<Claim>();
             claims.Add(new Claim("Nome", utente.Nome));
             claims.Add(new Claim("Cognome", utente.Cognome));
@@ -47,12 +42,10 @@ namespace CorsiFormazione.Application.Services
                 null,
                 claims,
                 expires: DateTime.Now.AddMinutes(30),
-                //chiave simmetrica(Comune)
-                signingCredentials: credentials);
+                signingCredentials: credentials);       //chiave simmetrica(Comune)
 
             var token = new JwtSecurityTokenHandler().WriteToken(securityToken);
 
-            //restituzione token
             return token;
         }
     }

@@ -13,7 +13,7 @@ namespace CorsiFormazione.Models.Context
         public DbSet<Utente> Utenti { get; set; }
         public DbSet<Corso> Corsi { get; set; }
         public DbSet<Docente> Docenti { get; set; }
-        public DbSet<CalendarioLezioni> Lezioni { get; set; }
+        public DbSet<Lezione> Lezioni { get; set; }
         public DbSet<Presenza> Presenze { get; set; }
 
         public MyDbContext(DbContextOptions<MyDbContext> config) : base(config) { }

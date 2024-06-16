@@ -14,10 +14,11 @@ namespace CorsiFormazione.Application.Models.Requests
         public Presenza ToEntity()
         {
             Presenza presenza = new Presenza();
-            presenza.NomeAlunno = NomeAlunno;
-            presenza.CognomeAlunno = CognomeAlunno;
+            presenza.NomeAlunno = NomeAlunno.ToLower();
+            presenza.CognomeAlunno = CognomeAlunno.ToLower();
             presenza.Ingrezzo = Ingrezzo;
             presenza.Uscita = Uscita;
+            presenza.Corso = Corso.ToLower();
 
             return presenza;
         }

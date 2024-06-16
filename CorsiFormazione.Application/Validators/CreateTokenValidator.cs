@@ -1,5 +1,6 @@
 ﻿using CorsiFormazione.Application.Models.Requests;
 using FluentValidation;
+using FluentValidation.Validators;
 using System.Text.RegularExpressions;
 
 namespace CorsiFormazione.Application.Validators
@@ -12,7 +13,15 @@ namespace CorsiFormazione.Application.Validators
                 .NotNull()
                 .WithMessage("L'email è obbligatoria (nullo)")
                 .NotEmpty()
-                .WithMessage("L'email è obbligatoria (vuoto)");
+                .WithMessage("L'email è obbligatoria (vuoto)")
+                .Custom((value, context) =>
+                {
+                    var regEx = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+                    if (regEx.IsMatch(value) == false)
+                    {
+                        context.AddFailure("L'email inserita non è in un formato valido");
+                    }
+                });
 
             RuleFor(r => r.password)
                 .NotNull()

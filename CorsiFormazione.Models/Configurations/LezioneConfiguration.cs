@@ -9,19 +9,15 @@ using System.Threading.Tasks;
 
 namespace CorsiFormazione.Models.Configurations
 {
-    internal class CalendarioLezioniConfiguration : IEntityTypeConfiguration<CalendarioLezioni>
+    internal class LezioneConfiguration : IEntityTypeConfiguration<Lezione>
     {
-        public void Configure(EntityTypeBuilder<CalendarioLezioni> builder)
+        public void Configure(EntityTypeBuilder<Lezione> builder)
         {
             builder.ToTable("CalendarioLezioni");
-            builder.HasKey(k => new { k.DataOraFine, k.DataOraInizio });
+            builder.HasKey(k => new { k.NomeCorso, k.DataOraInizio, k.DataOraFine });
             builder.Property(p => p.Erogazione)
                 .HasColumnName("ModoErogazione")
                 .HasConversion<string>();
-            /*builder.Property(p => p.DataOraInizio)
-                .HasColumnName("DataOraInizio");
-            builder.Property(p => p.DataOraFine)
-                .HasColumnName("DataOraFine");*/
         }
     }
 }

@@ -11,18 +11,17 @@ namespace CorsiFormazione.Web.Controllers
     [Route("api/Authentication/[controller]")]
     public class TokenController : ControllerBase
     {
-        public readonly ITokenService _tokenService;
+        private readonly TokenService _tokenService;
 
-        public TokenController(TokenService tokenService)
+        public TokenController(ITokenService tokenService)
         {
-            _tokenService = tokenService;
+            _tokenService = (TokenService) tokenService;
         }
 
         [HttpPost]
         [Route("createToken")]
         public IActionResult CreateToken(CreateTokenRequest request)
         {
-            //validazione richiesta (validator)
             string token = _tokenService.CreateToken(request);
             return Ok(ResponseFactory.WithSuccess(new CreateTokenResponse(token)));
         }

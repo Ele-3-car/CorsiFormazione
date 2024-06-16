@@ -14,7 +14,7 @@ namespace CorsiFormazione.Models.Configurations
         public void Configure(EntityTypeBuilder<Presenza> builder)
         {
             builder.ToTable("Presenza");
-            builder.HasKey(k => new { k.NomeAlunno, k.CognomeAlunno });
+            builder.HasKey(k => new { k.NomeAlunno, k.CognomeAlunno, k.Ingrezzo });
             builder.Property(p => p.Ingrezzo)
                 .HasColumnName("DataOraIngresso");
             builder.Property(p => p.Uscita)

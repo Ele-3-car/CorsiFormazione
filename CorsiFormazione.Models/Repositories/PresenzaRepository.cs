@@ -20,34 +20,40 @@ namespace CorsiFormazione.Models.Repositories
 
         public void AggiungiPresenza(Presenza presenza, string corso)
         {
-            
-            CalendarioLezioni calendario = Controlli(presenza, corso);
-            presenza.Calendario = calendario.IdCalendario;
+            Controlli(presenza, corso);
             _context.Presenze.Add(presenza);
         }
 
-        private CalendarioLezioni Controlli(Presenza presenza, string corso)
+        private void Controlli(Presenza presenza, string corso)
         {
             var controllaCorso = _context.Corsi
                 .Where(n => n.NomeCorso == corso).FirstOrDefault();
-            if (controllaCorso == null)
+            if(controllaCorso == null)
             {
                 throw new Exception("Il corso non esiste");
             }
+            if (presenza.Ingrezzo.Date != presenza.Uscita.Date)
+            {
+                throw new Exception("Sono state inserite date diverse per l'ingresso e l'uscita");
+            }
             var calendario = _context.Lezioni
-                .Where(i => i.IdCalendario == controllaCorso.Lezioni).First();
-            if (presenza.Ingrezzo < calendario.DataOraInizio || presenza.Ingrezzo > calendario.DataOraFine)
+                .Where(i => i.NomeCorso == corso)
+                .Where(d => d.DataOraInizio.Date == presenza.Ingrezzo.Date)
+                .FirstOrDefault();
+
+            if(calendario == null)
+            {
+                throw new Exception("Non esistono lezioni per la data inserita");
+            }
+            if (presenza.Ingrezzo.TimeOfDay < calendario.DataOraInizio.TimeOfDay ||
+                presenza.Ingrezzo.TimeOfDay > calendario.DataOraFine.TimeOfDay)
             {
                 throw new Exception($"Il corso non inizia prima delle {calendario.DataOraInizio.TimeOfDay}");
             }
-            else if (presenza.Uscita > calendario.DataOraFine || presenza.Uscita < calendario.DataOraInizio)
+            else if (presenza.Uscita.TimeOfDay > calendario.DataOraFine.TimeOfDay || 
+                presenza.Uscita.TimeOfDay < calendario.DataOraInizio.TimeOfDay)
             {
                 throw new Exception($"Il corso termina alle {calendario.DataOraFine.TimeOfDay}");
-            }
-
-            if (presenza.Ingrezzo.Date < calendario.DataOraInizio.Date || presenza.Ingrezzo.Date > calendario.DataOraFine.Date)
-            {
-                throw new Exception($"Il corso inizia il {calendario.DataOraInizio.Date} e termina il {calendario.DataOraFine.Date}");
             }
             if (_context.Presenze.Count() != 0)
             {
@@ -58,36 +64,45 @@ namespace CorsiFormazione.Models.Repositories
                     throw new Exception("La presenza è già stata registrata");
                 }
             }
-            return calendario;
         }
 
-        public void EliminaPresenza(string nome, string cognome, string corsoNome)
+        public void EliminaPresenza(string nome, string cognome, string corsoNome, DateTime data)
         {
+            nome = nome.ToLower();
+            cognome = cognome.ToLower();
+            corsoNome = corsoNome.ToLower();
+
             var corso = _context.Corsi
                 .Where(n => n.NomeCorso == corsoNome).FirstOrDefault();
             if(corso == null)
             {
                 throw new Exception("Il corso non esiste");
             }
-            var presenza = _context.Presenze
+            var controlloAlunno = _context.Presenze
                 .Where(p => p.NomeAlunno == nome)
-                .Where(p => p.CognomeAlunno ==  cognome)
-                .Where(p => p.Calendario == corso.Lezioni).FirstOrDefault();
-            if(presenza == null)
+                .Where(p => p.CognomeAlunno == cognome)
+                .AsQueryable();
+
+            if(controlloAlunno == null)
             {
-                throw new Exception("La presenza non era stata inserita");
+                throw new Exception($"Nessuna presenza registrata a nome {nome} {cognome}");
+            }
+
+            var presenza = controlloAlunno.Where(p => p.Corso == corsoNome)
+                .Where(p => p.Ingrezzo.Date.Equals(data.Date))
+                .FirstOrDefault();
+
+            if (presenza == null)
+            {
+                throw new Exception("La presenza non era stata inserita o c'è un'errore nella data inserita per la ricerca");
             }
             _context.Entry(presenza).State = EntityState.Deleted;
         }
 
-        public void Save()
-        {
-            _context.SaveChanges();
-        }
-
         public List<Presenza> RicercaPresenzeCorso(int from, int num, string corsoNome, out int totalNum)
         {
-            //TODO: finire
+            corsoNome = corsoNome.ToLower();
+            
             var corso = _context.Corsi
                 .Where(n => n.NomeCorso == corsoNome).FirstOrDefault();
             if(corso == null)
@@ -96,11 +111,7 @@ namespace CorsiFormazione.Models.Repositories
             }
             var query = _context.Presenze.AsQueryable();
 
-            query = query.Where(w => w.Calendario == corso.Lezioni);
-            /*if (!string.IsNullOrEmpty(corsoNome))
-            {
-                
-            }*/
+            query = query.Where(w => w.Corso == corsoNome);
 
             totalNum = query.Count();
             
@@ -110,34 +121,13 @@ namespace CorsiFormazione.Models.Repositories
                 .Skip(from)
                 .Take(num)
                 .ToList();
+
             return presenze;
-                
-            /*var corso = _context.Corsi
-                .Where(n => n.NomeCorso == corsoNome)
-                .FirstOrDefault();
-            if(corso == null)
-            {
-                throw new Exception("Il corso non esiste");
-            }
-            var presenze = _context.Presenze
-                .Where(i => i.Calendario == corso.Lezioni)
-                .ToList();
-            return presenze;*/
         }
 
-        public List<Presenza> RicercaPresenzeDocente(string nome, string cognome)
+        public void Save()
         {
-            throw new NotImplementedException();
-        }
-
-        public List<Presenza> RicercaPresenzeCorsoEData(string corso, DateOnly data)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Presenza> RicercaPresenzeCorsoCognomeECorso(string cognome, string corso)
-        {
-            throw new NotImplementedException();
+            _context.SaveChanges();
         }
     }
 }

@@ -24,9 +24,9 @@ namespace CorsiFormazione.Application.Services
             _utenteRepo.Save();
         }
 
-        public Utente PrendiUtente(string email)
+        public Utente PrendiUtente(string email, string password)
         {
-            return _utenteRepo.PrendiUtente(email);
+            return _utenteRepo.PrendiUtente(email, password);
         }
     }
 }

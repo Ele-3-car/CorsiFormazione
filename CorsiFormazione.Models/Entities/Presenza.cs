@@ -12,6 +12,6 @@ namespace CorsiFormazione.Models.Entities
         public string CognomeAlunno { get; set; }
         public DateTime Ingrezzo { get; set; }
         public DateTime Uscita { get; set; }
-        public int Calendario { get; set; }
+        public string Corso { get; set; }
     }
 }

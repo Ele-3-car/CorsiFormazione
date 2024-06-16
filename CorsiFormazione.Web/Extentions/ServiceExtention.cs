@@ -85,7 +85,7 @@ namespace CorsiFormazione.Web.Extentions
 
         private static IServiceCollection AddOptions(this IServiceCollection services, IConfiguration configuration)
         {
-            //reso disponibile alla Dipendent Injection
+            //reso disponibile alla Dipendence Injection
             services.Configure<JwtAuthenticationOption>(
                 configuration.GetSection("JwtAuthentication"));
             return services;

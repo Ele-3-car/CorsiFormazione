@@ -6,9 +6,8 @@ namespace CorsiFormazione.Web.Extentions
 {
     public static class MiddlewareExtension
     {
-        public static WebApplication? AddWebMiddleware(this WebApplication? app)
+        public static WebApplication AddWebMiddleware(this WebApplication app)
         {
-            // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();

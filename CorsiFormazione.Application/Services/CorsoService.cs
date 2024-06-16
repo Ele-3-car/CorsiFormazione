@@ -13,9 +13,15 @@ namespace CorsiFormazione.Application.Services
             _corsoRepo = corsoRepo;
         }
 
-        public void AggiungiCorso(Corso corso, Docente docente, CalendarioLezioni lezioni)
+        public void AggiungiCorso(Corso corso, Docente docente)
         {
-            _corsoRepo.AggiungiCorso(corso, docente, lezioni);
+            _corsoRepo.AggiungiCorso(corso, docente);
+            _corsoRepo.Save();
+        }
+
+        public void AggiungiLezione(Lezione lezione)
+        {
+            _corsoRepo.AggiungiLezione(lezione);
             _corsoRepo.Save();
         }
 

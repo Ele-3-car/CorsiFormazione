@@ -10,6 +10,6 @@ namespace CorsiFormazione.Application.Abstractions.Services
     public interface IUtenteService
     {
         void AggiungiUtente(Utente utente);
-        Utente PrendiUtente(string email);
+        Utente PrendiUtente(string email, string password);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using CorsiFormazione.Application.Abstractions.Services;
+using CorsiFormazione.Application.Factories;
 using CorsiFormazione.Application.Models.Requests;
 using CorsiFormazione.Application.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +23,7 @@ namespace CorsiFormazione.Web.Controllers
         {
             var utente = request.ToEntity();
             _utenteService.AggiungiUtente(utente);
-            return Ok(request);
+            return Ok(ResponseFactory.WithSuccess("Utente aggiunto con successo"));
         }
     }
 }

@@ -13,43 +13,22 @@ namespace CorsiFormazione.Application.Services
             _presenzaRepo = presenzaRepo;
         }
 
-        public void AggiungiPresenza(Presenza presenza, string corso)
+        public void AggiungiPresenza(Presenza presenza)
         {
-            _presenzaRepo.AggiungiPresenza(presenza, corso);
+            _presenzaRepo.AggiungiPresenza(presenza, presenza.Corso.ToLower());
             _presenzaRepo.Save();
         }
 
-        public void EliminaPresenza(string nome, string cognome, string corso)
+        public void EliminaPresenza(string nome, string cognome, string corso, DateTime data)
         {
 
-            _presenzaRepo.EliminaPresenza(nome, cognome, corso);
+            _presenzaRepo.EliminaPresenza(nome, cognome, corso, data);
             _presenzaRepo.Save();
         }
 
         public List<Presenza> RicercaPresenzeDaNomeCorso(int from, int num, string nomeCorso, out int totalNum)
         {
             var presenze = _presenzaRepo.RicercaPresenzeCorso(from, num, nomeCorso, out totalNum);
-            _presenzaRepo.Save();
-            return presenze;
-        }
-
-        public List<Presenza> RicercaPresenzeDaDocente(string nome, string cognome)
-        {
-            var presenze = _presenzaRepo.RicercaPresenzeDocente(nome, cognome);
-            _presenzaRepo.Save();
-            return presenze;
-        }
-
-        public List<Presenza> RicercaPresenzeDaCorsoEData(string corso, DateOnly data)
-        {
-            var presenze = _presenzaRepo.RicercaPresenzeCorsoEData(corso, data);
-            _presenzaRepo.Save();
-            return presenze;
-        }
-        
-        public List<Presenza> RicercaPresenzeDaCognome(string cognome, string corso)
-        {
-            var presenze = _presenzaRepo.RicercaPresenzeCorsoCognomeECorso(cognome, corso);
             _presenzaRepo.Save();
             return presenze;
         }

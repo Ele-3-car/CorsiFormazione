@@ -19,18 +19,30 @@ namespace CorsiFormazione.Models.Repositories
 
         public void AggiungiUtente(Utente utente)
         {
-            _context.Utenti.Add(utente);
-        }
-
-        public Utente PrendiUtente(string email)
-        {
-            Utente utente = _context.Utenti
-                .FirstOrDefault(e => e.UtenteEmail == email);
-            if (utente != null) { }
+            var verificaUtente = _context.Utenti
+                .Where(e => e.UtenteEmail == utente.UtenteEmail)
+                .FirstOrDefault();
+            if (verificaUtente == null)
             {
-                return utente;
+                _context.Utenti.Add(utente);
             }
             throw new Exception("L'utente non è presente");
+        }
+
+        public Utente PrendiUtente(string email, string password)
+        {
+            var utente = _context.Utenti
+                .Where(e => e.UtenteEmail == email)
+                .FirstOrDefault();
+            if (utente == null)
+            {
+                throw new Exception("L'utente non è presente");
+            }
+            if(utente.Password != password)
+            {
+                throw new Exception("Password errata");
+            }
+            return utente;
         }
 
         public void Save()

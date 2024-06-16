@@ -4,12 +4,15 @@ using CorsiFormazione.Application.Models.Requests;
 using CorsiFormazione.Application.Models.Responses;
 using CorsiFormazione.Application.Services;
 using CorsiFormazione.Models.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CorsiFormazione.Web.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class PresenzaController : ControllerBase
     {
         private readonly PresenzaService _presenzaService;
@@ -24,7 +27,7 @@ namespace CorsiFormazione.Web.Controllers
         public IActionResult AggiungiPresenza(AggiungiPresenzaRequest request)
         {
             var presenza = request.ToEntity();
-            _presenzaService.AggiungiPresenza(presenza, request.Corso);
+            _presenzaService.AggiungiPresenza(presenza);
             return Ok(ResponseFactory.WithSuccess($"Presenza di {request.NomeAlunno} {request.CognomeAlunno} al corso {request.Corso} aggiunta con successo"));
         }
 
@@ -33,7 +36,7 @@ namespace CorsiFormazione.Web.Controllers
         [Route("rimuoviPresenza")]
         public IActionResult EliminaPresenza(EliminaPresenzaRequest request)
         {
-            _presenzaService.EliminaPresenza(request.NomeAlunno, request.CognomeAlunno, request.Corso);
+            _presenzaService.EliminaPresenza(request.NomeAlunno, request.CognomeAlunno, request.Corso, request.Data);
             return Ok(ResponseFactory.WithSuccess($"Presenza di {request.NomeAlunno} {request.CognomeAlunno} al corso {request.Corso} eliminata con successo"));
         }
 

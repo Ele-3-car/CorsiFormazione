@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace CorsiFormazione.Models.Entities
 {
-    public class CalendarioLezioni
+    public class Lezione
     {
-        public int IdCalendario {  get; set; }
+        public string NomeCorso {  get; set; }
         public DateTime DataOraInizio { get; set; }
         public DateTime DataOraFine { get; set; }
         public string Luogo {  get; set; }
