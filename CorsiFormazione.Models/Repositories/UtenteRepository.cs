@@ -26,7 +26,10 @@ namespace CorsiFormazione.Models.Repositories
             {
                 _context.Utenti.Add(utente);
             }
-            throw new Exception("L'utente non è presente");
+            else
+            {
+                throw new Exception("L'utente è presente");
+            }
         }
 
         public Utente PrendiUtente(string email, string password)
