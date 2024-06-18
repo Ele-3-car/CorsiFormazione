@@ -32,13 +32,13 @@ namespace CorsiFormazione.Models.Repositories
             {
                 throw new Exception("Il corso non esiste");
             }
-            if (presenza.Ingrezzo.Date != presenza.Uscita.Date)
+            if (presenza.Ingresso.Date != presenza.Uscita.Date)
             {
                 throw new Exception("Sono state inserite date diverse per l'ingresso e l'uscita");
             }
             var calendario = _context.Lezioni
                 .Where(i => i.NomeCorso == corso)
-                .Where(d => d.DataOraInizio.Date == presenza.Ingrezzo.Date)
+                .Where(d => d.DataOraInizio.Date == presenza.Ingresso.Date)
                 .FirstOrDefault();
 
             if(calendario == null)
@@ -57,8 +57,8 @@ namespace CorsiFormazione.Models.Repositories
                 throw new Exception($"La presenza per l'alunno {presenza.NomeAlunno} {presenza.CognomeAlunno} è già presente");
             }
 
-            if (presenza.Ingrezzo.TimeOfDay < calendario.DataOraInizio.TimeOfDay ||
-                presenza.Ingrezzo.TimeOfDay > calendario.DataOraFine.TimeOfDay)
+            if (presenza.Ingresso.TimeOfDay < calendario.DataOraInizio.TimeOfDay ||
+                presenza.Ingresso.TimeOfDay > calendario.DataOraFine.TimeOfDay)
             {
                 throw new Exception($"Il corso non inizia prima delle {calendario.DataOraInizio.TimeOfDay}");
             }
@@ -92,7 +92,7 @@ namespace CorsiFormazione.Models.Repositories
             }
 
             var presenza = controlloAlunno.Where(p => p.Corso == corsoNome)
-                .Where(p => p.Ingrezzo.Date.Equals(data.Date))
+                .Where(p => p.Ingresso.Date.Equals(data.Date))
                 .FirstOrDefault();
 
             if (presenza == null)
@@ -124,8 +124,8 @@ namespace CorsiFormazione.Models.Repositories
             }
             
             var presenze = query
-                .OrderBy(o => o.Ingrezzo.Date)
-                .OrderBy(o => o.Ingrezzo.TimeOfDay)
+                .OrderBy(o => o.Ingresso.Date)
+                .OrderBy(o => o.Ingresso.TimeOfDay)
                 .Skip(from)
                 .Take(num)
                 .ToList();

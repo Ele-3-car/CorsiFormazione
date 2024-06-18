@@ -15,7 +15,7 @@ namespace CorsiFormazione.Application.Models.Dtos
         {
             NomeAlunno = presenza.NomeAlunno;
             CognomeAlunno = presenza.CognomeAlunno;
-            Ingrezzo = presenza.Ingrezzo;
+            Ingrezzo = presenza.Ingresso;
             Uscita = presenza.Uscita;
         }
     }

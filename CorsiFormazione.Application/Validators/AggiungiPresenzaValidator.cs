@@ -25,7 +25,7 @@ namespace CorsiFormazione.Application.Validators
                 .NotEmpty()
                 .WithMessage("Il cognome dell'alunno/a è obbligatorio (vuoto)");
 
-            RuleFor(r => r.Ingrezzo)
+            RuleFor(r => r.Ingresso)
                 .NotNull()
                 .WithMessage("La data e ora di ingresso dell'alunno/a sono obbligatorie (nullo)")
                 .NotEmpty()

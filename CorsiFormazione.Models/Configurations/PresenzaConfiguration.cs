@@ -14,14 +14,14 @@ namespace CorsiFormazione.Models.Configurations
         public void Configure(EntityTypeBuilder<Presenza> builder)
         {
             builder.ToTable("Presenza");
-            builder.HasKey(k => new { k.NomeAlunno, k.CognomeAlunno, k.Ingrezzo });
-            builder.Property(p => p.Ingrezzo)
+            builder.HasKey(k => new { k.NomeAlunno, k.CognomeAlunno, k.Ingresso });
+            builder.Property(p => p.Ingresso)
                 .HasColumnName("DataOraIngresso");
             builder.Property(p => p.Uscita)
                 .HasColumnName("DataOraUscita");
             builder.HasOne(k => k.LezioneDiRiferimento)
                 .WithMany(k => k.Presenze)
-                .HasForeignKey(k => new {k.Corso, k.Ingrezzo });
+                .HasForeignKey(k => new {k.Corso, k.Ingresso });
         }
     }
 }
