@@ -42,7 +42,7 @@ namespace CorsiFormazione.Application.Services
                 null,
                 claims,
                 expires: DateTime.Now.AddMinutes(30),
-                signingCredentials: credentials);       //chiave simmetrica(Comune)
+                signingCredentials: credentials);       
 
             var token = new JwtSecurityTokenHandler().WriteToken(securityToken);
 
