@@ -30,9 +30,9 @@ namespace CorsiFormazione.Application.Factories
             var response = new BaseResponse<string>();
             response.Success = false;
             response.Errors = new List<string>()
-        {
-            exception.Message
-        };
+            {
+                exception.Message
+            };
             return response;
         }
     }

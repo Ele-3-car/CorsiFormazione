@@ -13,7 +13,7 @@ namespace CorsiFormazione.Web.Results
                 var errorsNumber = key.Value.Errors;
                 for (int i = 0; i < errorsNumber.Count(); i++)
                 {
-                    errors.Add(errorsNumber[i].ErrorMessage);
+                    errors.Add(errorsNumber[0].ErrorMessage);
                 }
             }
 
