@@ -26,9 +26,9 @@ namespace CorsiFormazione.Application.Services
             _presenzaRepo.Save();
         }
 
-        public List<Presenza> RicercaPresenzeDaNomeCorso(int from, int num, string nomeCorso, out int totalNum)
+        public List<Presenza> RicercaPresenzeDaNomeCorso(int from, int num, int numeroPaginaVisualizzare,string nomeCorso, out int totalNum)
         {
-            var presenze = _presenzaRepo.RicercaPresenzeCorso(from, num, nomeCorso, out totalNum);
+            var presenze = _presenzaRepo.RicercaPresenzeCorso(from, num, numeroPaginaVisualizzare, nomeCorso, out totalNum);
             _presenzaRepo.Save();
             return presenze;
         }

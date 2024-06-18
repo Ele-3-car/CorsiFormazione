@@ -8,6 +8,6 @@ namespace CorsiFormazione.Application.Abstractions.Services
 
         void EliminaPresenza(string nome, string cognome, string corso, DateTime data);
 
-        List<Presenza> RicercaPresenzeDaNomeCorso(int from, int num, string name, out int totalNum);
+        List<Presenza> RicercaPresenzeDaNomeCorso(int from, int num, int numeroPaginaVisualizzare, string name, out int totalNum);
     }
 }

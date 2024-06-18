@@ -45,7 +45,7 @@ namespace CorsiFormazione.Web.Controllers
         public IActionResult RicercaPresenzeCorsoDaNomeCorso(RicercaPresenzaByNomeCorsoRequest request)
         {
             int totalNum = 0;
-            var presenze = _presenzaService.RicercaPresenzeDaNomeCorso((request.NumeroPaginaVisualizzare-1) * request.PageSize, request.PageSize, request.NomeCorso, out totalNum);
+            var presenze = _presenzaService.RicercaPresenzeDaNomeCorso((request.NumeroPaginaVisualizzare-1) * request.PageSize, request.PageSize, request.NumeroPaginaVisualizzare, request.NomeCorso, out totalNum);
 
             var response = new RicercaPresenzeResponse();
             var pageFounded = (totalNum / (decimal) request.PageSize);

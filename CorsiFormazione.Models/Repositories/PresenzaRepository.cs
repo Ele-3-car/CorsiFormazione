@@ -102,7 +102,7 @@ namespace CorsiFormazione.Models.Repositories
             _context.Entry(presenza).State = EntityState.Deleted;
         }
 
-        public List<Presenza> RicercaPresenzeCorso(int from, int num, string corsoNome, out int totalNum)
+        public List<Presenza> RicercaPresenzeCorso(int from, int num, int numeroPaginaVisualizzare, string corsoNome, out int totalNum)
         {
             corsoNome = corsoNome.ToLower();
             
@@ -117,6 +117,11 @@ namespace CorsiFormazione.Models.Repositories
             query = query.Where(w => w.Corso == corsoNome);
 
             totalNum = query.Count();
+            if (numeroPaginaVisualizzare < 0 ||
+                numeroPaginaVisualizzare > (int)Math.Ceiling(totalNum/(decimal)num))
+            {
+                throw new Exception($"La pagina che si vuole visualizzare non esiste. Le pagine vanno da 1 a {(int)Math.Ceiling(totalNum / (decimal)num)}");
+            }
             
             var presenze = query
                 .OrderBy(o => o.Ingrezzo.Date)
