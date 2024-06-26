@@ -70,6 +70,8 @@ namespace CorsiFormazione.Models.Repositories
                 _context.Entry(presenza).State = EntityState.Deleted;
             }
 
+
+
         }
 
         private Corso OttieniCorso(string nome)
@@ -91,7 +93,11 @@ namespace CorsiFormazione.Models.Repositories
 
         public void AggiungiLezione(Lezione lezione)
         {
-            var corso = OttieniCorso(lezione.NomeCorso);
+            if(lezione.DataOraInizio.TimeOfDay > lezione.DataOraFine.TimeOfDay)
+            {
+                throw new Exception("l'orario di inizio non puo essere maggiore all'orario di fine lezione");
+            }
+                var corso = OttieniCorso(lezione.NomeCorso);
             var lezioniPresenti = _context.Lezioni
                 .Where(n => n.NomeCorso == corso.NomeCorso)
                 .ToList();
