@@ -6,7 +6,7 @@ namespace CorsiFormazione.Application.Models.Dtos
     {
         public string NomeAlunno { get; set; }
         public string CognomeAlunno { get; set; }
-        public DateTime Ingrezzo { get; set; }
+        public DateTime Ingresso { get; set; }
         public DateTime Uscita { get; set; }
 
         public PresenzaDto() { }
@@ -15,7 +15,7 @@ namespace CorsiFormazione.Application.Models.Dtos
         {
             NomeAlunno = presenza.NomeAlunno;
             CognomeAlunno = presenza.CognomeAlunno;
-            Ingrezzo = presenza.Ingresso;
+            Ingresso = presenza.Ingresso;
             Uscita = presenza.Uscita;
         }
     }
