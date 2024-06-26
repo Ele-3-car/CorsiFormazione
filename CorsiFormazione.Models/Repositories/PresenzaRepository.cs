@@ -125,7 +125,7 @@ namespace CorsiFormazione.Models.Repositories
             
             var presenze = query
                 .OrderBy(o => o.Ingresso.Date)
-                .OrderBy(o => o.Ingresso.TimeOfDay)
+                .ThenBy(o => o.Ingresso.TimeOfDay)
                 .Skip(from)
                 .Take(num)
                 .ToList();
